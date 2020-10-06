@@ -1,2 +1,2 @@
 # pemrograman-web
-Repo ini digunakan untuk menyimpal hasil praktikum pemrogaman web
+Repo ini digunakan untuk menyimpan hasil praktikum pemrogaman web
