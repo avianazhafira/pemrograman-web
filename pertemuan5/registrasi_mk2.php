@@ -9,31 +9,43 @@
     
 </head>
 <body>
-    <?php 
-    if (isset($_POST['tombolSubmit'])) {
+    <?php   
+    $status = 2;  
+    if (isset($_POST['kode_mk'])) {
         include_once "koneksi.php"; 
         $kode_mk = $_POST['kode_mk'];
         $nama_mk = $_POST['nama_mk'];
         $kategori_mk = $_POST['kategori_mk'];
-        $SKS = $_POST['SKS'];
+        $SKS = $_POST['SKS']; 
 
+         //buat koneksi
+         $strsql = "INSERT INTO matakuliah (kode_mk, nama_mk, kategori_mk, SKS) 
+         VALUES ('$kode_mk','$nama_mk','$kategori_mk','$SKS')";
+         
+         $runSQL = mysqli_query($conn,$strsql);        
+         if ($runSQL) {
+             $status = 1; //sukses
+         }  
+         else {
+             $status = 0; //tidak sukses;
+         }       
     }            
     ?>
     <div class="container">
-        <h2>Pendaftaran Mata Kuliah versi 2(dengan modal)</h2>
-    
+        <h2>Pendaftaran Mata Kuliah versi 2 (dg Modal)</h2>   
     <!-- Ini Modal -->
         <div class="modal" id="pesan">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <!-- Ini header -->
+                    <!-- ini header -->
                     <div class="modal-header">
                         <h4 class="modal-title">Konfirmasi Pendaftaran</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <!-- Body -->
+
+                    <!-- body -->
                     <div class="modal-body">
-                        <div class="container" >
+                        <div class="container">
                             <div class="row">
                                 <div class="col-6"><b>Kode Mata Kuliah</b></div>
                                 <div class="col-6"><span id="kodemk"></span></div>
@@ -43,28 +55,46 @@
                                 <div class="col-6"><span id="namamk"></span></div>
                             </div>
                             <div class="row">
-                                <div class="col-6"><b>Kategori Matakuliah</b></div>
+                                <div class="col-6"><b>Kategori</b></div>
                                 <div class="col-6"><span id="kategorimk"></span></div>
                             </div>
                             <div class="row">
                                 <div class="col-6"><b>SKS</b></div>
-                                <div class="col-6"><span id="sksmk"></span></div>
+                                <div class="col-6"><span id="sksmk"></span> sks</div>
                             </div>
                         </div>
                     </div>
+
                     <!-- footer -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-info" data-dismiss="modal">Edit</button>
-                        
-                        <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
+                        <button id="proses" type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
                     </div>
                 </div>
             </div>
         </div>
 
-
-    <!-- Ini end modal -->
-        <form method="post" action="registrasi_mk2.php">
+    <!-- ini end modal -->
+        <?php 
+            if ($status == 1) {
+        ?>    
+            <div class="alert alert-success alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Data berhasil diinput ke dalam database.
+            </div>
+        <?php 
+            }
+            else if ($status == 0){
+        ?>
+            <div class="alert alert-danger alert-dismissible fade show">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Data tidak berhasil diinput ke dalam database.
+            </div>
+        <?php 
+            }
+        
+        ?>
+        <form id="myform" method="post" action="registrasi_mk2.php">
             <div class="form-group">
                 <label>Kode Mata Kuliah</label>
                 <input id="kode_mk" class="form-control" type="text" name="kode_mk">
@@ -95,24 +125,26 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
     <script>
-    $(document).ready(function(){
-        //ambil data dr form
+    $(document).ready(function() {
+        $('#proses').click(function(){
+            $('#myform').submit();
+        });
         $('#tombol').click(function(){
-            const kode_mk=$('#kode_mk').val();
-            const nama_mk=$('#nama_mk').val();
-            const kategori_mk=$('#kategori_mk').val();
-            const SKS=$('#SKS').val();
-            
+            //ambil data dari form
+            const kode_mk = $('#kode_mk').val();
+            const nama_mk = $('#nama_mk').val();
+            const kategori_mk = $('#kategori_mk').val();
+            const SKS = $('#SKS').val();
+
             $('#kodemk').text(kode_mk);
             $('#namamk').text(nama_mk);
             $('#kategorimk').text(kategori_mk);
             $('#sksmk').text(SKS);
-            console
-
+         
             //buka modal
             $('#pesan').modal({
-                show:true
-                });
+                show: true
+            });
         });
     });
     
