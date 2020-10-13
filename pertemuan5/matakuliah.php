@@ -24,16 +24,20 @@
             <div class="form-group"> 
                 <label>Kategori matakuliah</label>
                 <select class="form-control" type="option" name="kategori_mk">
-                <option> MKMA </option>
+                <option value="pilih"> Pilih </option>
+                <option value="MKMA"> Mata Kuliah Major </option>
+                <option value="MKMI"> Mata Kuliah Minor </option>
+                <option value="MKPIL"> Mata Kuliah Pilihan </option>
+                <!-- <option> MKMA </option>
                 <option> MKMI </option>
-                <option> MKPIL </option>
+                <option> MKPIL </option> -->
                 </select>
             </div>
             <div class="form-group"> 
                 <label>SKS</label>
                 <input class="form-control" type="text" name="SKS">
             </div> 
-            <input class="btn btn-primary" type="submit" name="tombolSubmit" value="Daftar">
+            <input class="btn btn-primary" type="submit" name="tombolSubmit" value="Simpan">
         </form>
     </div>            
    
