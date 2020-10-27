@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Mata Kuliah</title>
+    <title>Registrasi Mata Kuliah</title>
     <!-- CSS only -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
@@ -11,47 +11,26 @@
 <body>
     <?php   
     include_once "header.php";
-    include_once "koneksi_mk.php"; 
     $status = 2;  
     if (isset($_POST['kode_mk'])) {
+        include_once "koneksi_mk.php"; 
         $kode_mk = $_POST['kode_mk'];
         $nama_mk = $_POST['nama_mk'];
         $kategori_mk = $_POST['kategori_mk'];
         $SKS = $_POST['SKS']; 
 
          //buat koneksi
-         $strSQL = "UPDATE INTO matakuliah SET nama_mk='".$nama_mk."', kategori_mk='".$kategori_mk."', SKS='".$SKS."' WHERE kode_mk='".$kode_mk."' ";
-         echo $strSQL;
-         $runSQL = mysqli_query($conn,$strSQL);        
+         $strsql = "INSERT INTO matakuliah (kode_mk, nama_mk, kategori_mk, SKS) 
+         VALUES ('$kode_mk','$nama_mk','$kategori_mk','$SKS')";
+         
+         $runSQL = mysqli_query($conn,$strsql);        
          if ($runSQL) {
              $status = 1; //sukses
          }  
          else {
              $status = 0; //tidak sukses;
          }       
-        //  header("refresh:3; url=list_mk.php");
-    } 
-    else if(isset($_GET['kode_mk'])){
-        $kode_mk= $_GET['kode_mk'];
-        $strSQL ="SELECT * FROM matakuliah WHERE kode_mk='".$kode_mk."'";
-        $runStrSQL = mysqli_query($conn,$strSQL);
-        $jmlRowData = mysqli_num_rows($runStrSQL);
-        if ($jmlRowData > 0 ){
-            while($row = mysqli_fetch_assoc($runStrSQL)){
-                $nama_mk= $row["nama_mk"];
-                $kategori_mk= $row["kategori_mk"];
-                $SKS = $row["SKS"];
-            }
-        }
-    } 
-    else {
-        
-        $nama_mk="";
-        $kategori_mk="";
-        $SKS = "";
-        $kode_mk="";
-    }  
-    $disableForm = isset($_GET['kode_mk'])?"enabled": "disabled";        
+    }            
     ?>
     <div class="container">
         <h2>Pendaftaran Mata Kuliah versi 2 (dg Modal)</h2>   
@@ -116,18 +95,18 @@
             }
         
         ?>
-        <form id="myform" method="post" action="edit_mk2.php">
+        <form id="myform" method="post" action="registrasi_mk2.php">
             <div class="form-group">
                 <label>Kode Mata Kuliah</label>
-                <input id="kode_mk" class="form-control" type="text" name="kode_mk" value="<?php echo $kode_mk ?>" readonly <?php echo $disableForm ?>  >
+                <input id="kode_mk" class="form-control" type="text" name="kode_mk">
             </div>
             <div class="form-group">
                 <label>Nama Mata Kuliah</label>
-                <input id="nama_mk" class="form-control" type="text" name="nama_mk" value="<?php echo $nama_mk ?>" <?php echo $disableForm ?> >
+                <input id="nama_mk" class="form-control" type="text" name="nama_mk">
             </div>
             <div class="form-group">
                 <label>Kategori Mata Kuliah</label>
-                <select id="kategori_mk" name="kategori_mk" class="form-control" <?php echo $disableForm ?> >
+                <select id="kategori_mk" name="kategori_mk" class="form-control">
                 <option value="pilih">Pilih</option>
                 <option value="MKMA">Mata Kuliah Major</option>
                 <option value="MKMI">Mata Kuliah Minor</option>
@@ -136,7 +115,7 @@
             </div>
             <div class="form-group">
                 <label>SKS</label>
-                <input id="SKS" class="form-control" type="text" name="SKS" value="<?php echo $SKS ?>" <?php echo $disableForm ?> >
+                <input id="SKS" class="form-control" type="text" name="SKS">
             </div>           
                 <input class="btn btn-primary" type="button" id="tombol" value="Simpan">   
         </form>
