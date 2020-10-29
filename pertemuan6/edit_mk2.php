@@ -11,27 +11,8 @@
 <body>
     <?php   
     include_once "header.php";
-    include_once "koneksi_mk.php"; 
-    $status = 2;  
-    if (isset($_POST['kode_mk'])) {
-        $kode_mk = $_POST['kode_mk'];
-        $nama_mk = $_POST['nama_mk'];
-        $kategori_mk = $_POST['kategori_mk'];
-        $SKS = $_POST['SKS']; 
-
-         //buat koneksi
-         $strSQL = "UPDATE INTO matakuliah SET nama_mk='".$nama_mk."', kategori_mk='".$kategori_mk."', SKS='".$SKS."' WHERE kode_mk='".$kode_mk."' ";
-         echo $strSQL;
-         $runSQL = mysqli_query($conn,$strSQL);        
-         if ($runSQL) {
-             $status = 1; //sukses
-         }  
-         else {
-             $status = 0; //tidak sukses;
-         }       
-        //  header("refresh:3; url=list_mk.php");
-    } 
-    else if(isset($_GET['kode_mk'])){
+    include_once "koneksi_mk.php";
+    if(isset($_GET['kode_mk'])){
         $kode_mk= $_GET['kode_mk'];
         $strSQL ="SELECT * FROM matakuliah WHERE kode_mk='".$kode_mk."'";
         $runStrSQL = mysqli_query($conn,$strSQL);
@@ -45,23 +26,19 @@
         }
     } 
     else {
-        
-        $nama_mk="";
-        $kategori_mk="";
-        $SKS = "";
-        $kode_mk="";
+        header("location:list_mk.php");
     }  
     $disableForm = isset($_GET['kode_mk'])?"enabled": "disabled";        
     ?>
     <div class="container">
-        <h2>Pendaftaran Mata Kuliah versi 2 (dg Modal)</h2>   
+        <h2>Edit Mata Kuliah</h2>   
     <!-- Ini Modal -->
         <div class="modal" id="pesan">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- ini header -->
                     <div class="modal-header">
-                        <h4 class="modal-title">Konfirmasi Pendaftaran</h4>
+                        <h4 class="modal-title">Konfirmasi Pengeditan</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
@@ -97,26 +74,8 @@
         </div>
 
     <!-- ini end modal -->
-        <?php 
-            if ($status == 1) {
-        ?>    
-            <div class="alert alert-success alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                Data berhasil diinput ke dalam database.
-            </div>
-        <?php 
-            }
-            else if ($status == 0){
-        ?>
-            <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                Data tidak berhasil diinput ke dalam database.
-            </div>
-        <?php 
-            }
         
-        ?>
-        <form id="myform" method="post" action="edit_mk2.php">
+        <form id="myform" method="post" action="update.php">
             <div class="form-group">
                 <label>Kode Mata Kuliah</label>
                 <input id="kode_mk" class="form-control" type="text" name="kode_mk" value="<?php echo $kode_mk ?>" readonly <?php echo $disableForm ?>  >
